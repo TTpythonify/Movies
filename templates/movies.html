@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='movies.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>Enter a movie</h1>
+            <form action="/" method="post">
+                <input type="text" id="movie_name" name="movie_name" required placeholder="Enter Movie Name">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        
+        {% if error_message %}
+        <div class="error-message">
+            {{ error_message }}
+        </div>
+        {% endif %}
+
+        <div class="results">
+            {% if image %}
+        <div class="image-container">
+            <img class="movie-poster" src="{{ image }}" alt="Movie Poster">
+        </div>
+        {% endif %}
+
+        <div class="details-container">
+            {% if details and not error_message %}
+                <h3>Overview</h3>
+                <p>{{ details.overview }}</p>
+                <h3>Release Year</h3>
+                <p>{{ details.release_year }}</p>
+                <h3>Genre</h3>
+                <p>{{ details.genre | join(', ') }}</p>
+                <h2>Streaming Options</h2>
+                <ul>
+                    {% if details.streaming_options %}
+                        {% for link, price in details.streaming_options.items() %}
+                            <li><a href="{{ link }}">{{ price }}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        <li>No streaming options available</li>
+                    {% endif %}
+                </ul>
+            {% else %}
+                <p>No details available</p>
+            {% endif %}
+        </div>
+            
+
+        </div>
+
+    
+    </div>
+</body>
+</html>
